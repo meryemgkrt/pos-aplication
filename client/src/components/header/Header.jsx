@@ -43,15 +43,15 @@ const Header = () => {
             <CopyOutlined className="text-xl md:text-2xl" />
             <span className="md:text-[10px] text-[12px]">Faturalar</span>
           </Link>
-          <Link to={"/"} className="menu-link flex flex-col items-center hover:text-[#40a9ff] transition-all">
+          <Link to={"/customeers"} className="menu-link flex flex-col items-center hover:text-[#40a9ff] transition-all">
             <UserOutlined className="text-xl md:text-2xl" />
             <span className="md:text-[10px] text-[12px]">Müşteriler</span>
           </Link>
-          <Link to={"/"} className="menu-link flex flex-col items-center hover:text-[#40a9ff] transition-all">
+          <Link to={"/statistic"} className="menu-link flex flex-col items-center hover:text-[#40a9ff] transition-all">
             <BarChartOutlined className="text-xl md:text-2xl" />
             <span className="md:text-[10px] text-[12px]">İstatistikler</span>
           </Link>
-          <Link to={"/"} className="menu-link flex flex-col items-center hover:text-[#40a9ff] transition-all">
+          <Link to={"/register"} className="menu-link flex flex-col items-center hover:text-[#40a9ff] transition-all">
             <LogoutOutlined className="text-xl md:text-2xl" />
             <span className="md:text-[10px] text-[12px]">Çıkış</span>
           </Link>

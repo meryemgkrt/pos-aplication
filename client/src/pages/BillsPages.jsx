@@ -52,14 +52,22 @@ const BillsPages = () => {
           bordered
           pagination={false}
         />
-        <div className="flex justify-end mt-4 cart-total">
-          <Card className=" w-72">
+       
+         
             
-            <Button onClick={showModal} size="large" className="w-full mt-4" type="primary">
-              Siparişi Oluştur
+       <div className="flex justify-end mt-4 cart-total">
+          <Card className="border-none w-72">
+            <Button
+              className="w-full mt-4"
+              type="primary"
+              size="large"
+              onClick={() => setIsModalOpen(true)}
+            >
+              Yazdır
             </Button>
           </Card>
         </div>
+       
       </div>
       <PrintBills isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}  />
   </div>;

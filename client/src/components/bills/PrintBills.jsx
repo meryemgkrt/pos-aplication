@@ -57,36 +57,37 @@ const PrintBills = ({ isModalOpen, setIsModalOpen }) => {
               </div>
             </div>
             <div className="mt-8 bill-table-area">
-              <table className="min-w-full overflow-hidden divide-slate-500">
-                <thead>
+            <table className="min-w-full overflow-hidden divide-slate-500">
+            <thead>
                   <tr className="border-b border-slate-200">
                     <th
                       scope="col"
-                      className="py-3.5 pl-4 text-left text-sm font-normal text-slate-700 sm:pl-6 md:pl-0 hidden sm:table-cell"
+                      className="py-3.5 pl-4 text-left text-sm font-normal text-slate-700 sm:pl-6 md:pl-0 sm:table-cell hidden"
                     >
                       Görsel
                     </th>
                     <th
                       scope="col"
-                      className="py-3.5 pl-4 text-left text-sm font-normal text-slate-700 sm:pl-6 md:pl-0"
+                      className="py-3.5 pl-4 text-left text-sm font-normal text-slate-700 sm:pl-6 md:pl-0 sm:table-cell hidden"
                     >
+                      {" "}
                       Başlık
                     </th>
                     <th
                       scope="col"
-                      className="py-3.5 pl-4 text-center text-sm font-normal text-slate-700 sm:pl-6 md:pl-0 hidden sm:table-cell"
+                      className="py-3.5 pl-4 text-center text-sm font-normal text-slate-700 sm:pl-6 md:pl-0 sm:table-cell hidden"
                     >
                       Fiyat
                     </th>
                     <th
                       scope="col"
-                      className="py-3.5 pl-4 text-center text-sm font-normal text-slate-700 sm:pl-6 md:pl-0 hidden sm:table-cell"
+                      className="py-3.5 pl-4 text-center text-sm font-normal text-slate-700 sm:pl-6 md:pl-0 sm:table-cell hidden"
                     >
                       Adet
                     </th>
                     <th
                       scope="col"
-                      className="py-3.5 pl-4 text-left sm:text-end text-sm font-normal text-slate-700 sm:pl-6 md:pl-0"
+                      className="py-3.5 pl-4 text-end text-sm font-normal text-slate-700 sm:pl-6 md:pl-0 sm:table-cell hidden"
                     >
                       Toplam
                     </th>
@@ -176,7 +177,7 @@ const PrintBills = ({ isModalOpen, setIsModalOpen }) => {
                     </th>
                   </tr>
                 </tfoot>
-              </table>
+              </table> bu kodlarda ekran küçüldüğünde başlık ve toplam kodları konumunu korusun diğirleri görünmesin
               <div className="py-9">
                 <div className="border-t border-slate-300 pt-9">
                   <p>
