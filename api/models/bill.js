@@ -1,23 +1,17 @@
 const mongoose = require("mongoose");
 
-const billSchema = new mongoose.Schema(
+const BillSchema = new mongoose.Schema(
   {
-    customeName: {
+    customerName: {
       type: String,
       required: true,
     },
-    customerPhoneNumber: {
+    customerPhoneNumber: { type: String, require: true },
+     paymentMode: {
       type: String,
       required: true,
-    },
-    paymentMode: {
-      type: String,
-      required: true,
-    },
-    cartItems: {
-      type: Array,
-      required: true,
-    },
+    }, 
+    cartItems: { type: Array, require: true },
     subTotal: {
       type: Number,
       required: true,
@@ -37,6 +31,6 @@ const billSchema = new mongoose.Schema(
   }
 );
 
-const bill = mongoose.model("Bills", billSchema);
+const Bill = mongoose.model("bills", BillSchema);
 
-module.exports = bill;
+module.exports = Bill;

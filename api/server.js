@@ -10,6 +10,10 @@ dotenv.config();
 
 // Import routes
 const categoryRoute = require("./routes/category.js");
+const productRoute = require("./routes/products.js");
+const billRoute = require("./routes/bill.js");
+const userRoute = require("./routes/user.js");
+const usersRoute = require("./routes/users.js");
 
 // Middlewares
 app.use(express.json());
@@ -21,15 +25,20 @@ if (!mongoUri) {
   throw new Error("MONGO_URL environment variable is not defined.");
 }
 
-mongoose.connect(mongoUri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log("MongoDB connected successfully"))
-.catch((err) => console.error("MongoDB connection error:", err));
+mongoose
+  .connect(mongoUri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("MongoDB connected successfully"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
 // Routes
-app.use("/api", categoryRoute);
+app.use("/api/category", categoryRoute);
+app.use("/api/products", productRoute);
+app.use("/api/bill", billRoute);
+app.use("/api/user", userRoute);
+app.use("/api/users", usersRoute);
 
 app.get("/", (req, res) => res.send("Hello World!"));
 
