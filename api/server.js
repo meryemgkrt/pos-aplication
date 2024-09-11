@@ -11,7 +11,7 @@ dotenv.config();
 // Import routes
 const categoryRoute = require("./routes/category.js");
 const productRoute = require("./routes/products.js");
-const billRoute = require("./routes/bill.js");
+const billRoute = require("./routes/bills.js");
 const userRoute = require("./routes/user.js");
 const usersRoute = require("./routes/users.js");
 
@@ -36,7 +36,7 @@ mongoose
 // Routes
 app.use("/api/category", categoryRoute);
 app.use("/api/products", productRoute);
-app.use("/api/bill", billRoute);
+app.use("/api/bills", billRoute);
 app.use("/api/user", userRoute);
 app.use("/api/users", usersRoute);
 
