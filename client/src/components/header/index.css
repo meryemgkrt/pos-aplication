@@ -6,3 +6,7 @@
 .menu-link{
   @apply gap-y-1 flex flex-col items-center justify-center hover:text-[#40a9ff] transition-all duration-300 ease-in-out;  
 }
+
+.menu-link.active {
+  @apply !text-[#40a9ff];
+}

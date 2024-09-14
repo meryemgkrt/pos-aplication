@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const express = require("express");
 const app = express();
+const logger = require("morgan");
 const port = process.env.PORT || 5000;
 
 // Load environment variables from .env file
@@ -16,6 +17,7 @@ const userRoute = require("./routes/user.js");
 const usersRoute = require("./routes/users.js");
 
 // Middlewares
+app.use(logger("dev"));
 app.use(express.json());
 app.use(cors());
 
