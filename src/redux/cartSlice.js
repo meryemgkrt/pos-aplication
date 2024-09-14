@@ -1,29 +1,32 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { act } from "react";
 
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
-    cartItems: [],
-    total: 0,
+    cartItems: localStorage.getItem("cart")
+      ? JSON.parse(localStorage.getItem("cart")).cartItems || []
+      : [],
+    total: localStorage.getItem("cart")
+      ? JSON.parse(localStorage.getItem("cart")).total || 0
+      : 0, // Total için doğru tip olan bir sayı (0) kullanıldı
     tax: 20,
   },
   reducers: {
     addProduct: (state, action) => {
+      state.cartItems = Array.isArray(state.cartItems) ? state.cartItems : [];
+
       const findCartItem = state.cartItems.find(
         (item) => item._id === action.payload._id
       );
       if (findCartItem) {
-        findCartItem.quantity = findCartItem.quantity + 1;
+        findCartItem.quantity += 1;
       } else {
-        state.cartItems.push(action.payload);
+        state.cartItems.push({ ...action.payload, quantity: 1 });
       }
 
       state.total += action.payload.price;
     },
     deleteCart: (state, action) => {
-      /*     const findCartItem= state.cartItems.find((item)=>item._id === action.payload._id);
-       */
       state.cartItems = state.cartItems.filter(
         (item) => item._id !== action.payload._id
       );
@@ -34,8 +37,8 @@ const cartSlice = createSlice({
       const cartItem = state.cartItems.find(
         (item) => item._id === action.payload._id
       );
-    
-      if (cartItem) { 
+
+      if (cartItem) {
         cartItem.quantity += 1;
         state.total += cartItem.price;
       }
@@ -45,8 +48,8 @@ const cartSlice = createSlice({
       const cartItem = state.cartItems.find(
         (item) => item._id === action.payload._id
       );
-      
-      if (cartItem) {  // Eğer cartItem tanımlıysa
+
+      if (cartItem) {
         cartItem.quantity -= 1;
         if (cartItem.quantity === 0) {
           state.cartItems = state.cartItems.filter(
@@ -57,13 +60,13 @@ const cartSlice = createSlice({
       }
     },
 
-    reset:(state)=>{
-      state.cartItems=[];
-      state.total=0;
-    }
-    
+    reset: (state) => {
+      state.cartItems = [];
+      state.total = 0;
+    },
   },
 });
 
-export const { addProduct, deleteCart, increase, decrease,reset } = cartSlice.actions;
+export const { addProduct, deleteCart, increase, decrease, reset } =
+  cartSlice.actions;
 export default cartSlice.reducer;

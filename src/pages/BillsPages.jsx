@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useRef } from "react";
 import Header from "../components/header/Header";
-import { Table, Card, Button } from "antd";
+import { Table, Card, Button, Input, Space, Spin } from "antd";
 import PrintBills from "../components/bills/PrintBills";
 import { useState, useEffect } from "react";
+import Highlighter from "react-highlight-words";
+import { SearchOutlined } from "@ant-design/icons";
+
+
 const BillsPages = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
@@ -10,8 +14,124 @@ const BillsPages = () => {
   };
   const [billsItems, setBillsItems] = useState();
   const [customer, setCustomer] = useState();
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
+  const searchInput = useRef(null);
 
- 
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText("");
+  };
+
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+      close,
+    }) => (
+      <div
+        style={{
+          padding: 8,
+        }}
+        onKeyDown={(e) => e.stopPropagation()}
+      >
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{
+            marginBottom: 8,
+            display: "block",
+          }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => clearFilters && handleReset(clearFilters)}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Reset
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({
+                closeDropdown: false,
+              });
+              setSearchText(selectedKeys[0]);
+              setSearchedColumn(dataIndex);
+            }}
+          >
+            Filter
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              close();
+            }}
+          >
+            close
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined
+        style={{
+          color: filtered ? "#1677ff" : undefined,
+        }}
+      />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownOpenChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current?.select(), 100);
+      }
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{
+            backgroundColor: "#ffc069",
+            padding: 0,
+          }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ""}
+        />
+      ) : (
+        text
+      ),
+  });
+
   useEffect(() => {
     const getBills = async () => {
       try {
@@ -25,21 +145,26 @@ const BillsPages = () => {
     getBills();
   }, []);
 
+ 
+
   const columns = [
     {
       title: "Müşteri Adı",
       dataIndex: "customerName",
       key: "customerName",
+      ...getColumnSearchProps("customerName"),
     },
     {
       title: "Telefon Numarası",
       dataIndex: "customerPhoneNumber",
       key: "customerPhoneNumber",
+      ...getColumnSearchProps("customerPhoneNumber")
     },
     {
       title: "Oluşturulma Tarihi",
       dataIndex: "createdAt",
       key: "createdAt",
+     
       render(text) {
         return <span>{text.substring(0, 10)}</span>;
       },
@@ -49,11 +174,13 @@ const BillsPages = () => {
       title: "Ödenme Yöntemi",
       dataIndex: "paymentMode",
       key: "paymentMode",
+      ...getColumnSearchProps("paymentMode"),
     },
     {
       title: "Toplam Fiyat",
       dataIndex: "totalAmount",
       key: "totalAmount",
+      sorter: (a, b) => a.totalAmount - b.totalAmount,
       render(text) {
         return <span className="">{text}₺</span>;
       },
@@ -62,6 +189,7 @@ const BillsPages = () => {
       title: "Actions",
       dataIndex: "action",
       key: "action",
+      
       render(_, record) {
         return (
           <Button
@@ -82,20 +210,28 @@ const BillsPages = () => {
   return (
     <div>
       <Header />
-      <div className="px-6">
-        <h1 className="mb-4 text-4xl font-bold text-center">FATURALAR</h1>
+      <h1 className="mb-4 text-4xl font-bold text-center">FATURALAR</h1>
+      {billsItems ? (
+        <div className="px-6">
+       
         <Table
           dataSource={billsItems}
           columns={columns}
           bordered
           pagination={false}
           scroll={{
-            x:1000,
-            y:300
+            x: 1000,
+            y: 300,
           }}
+          rowKey="_id"
         />
       </div>
-      <PrintBills customer={customer} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+      ):<Spin size="large" className="absolute flex items-center justify-center w-screen h-screen top-1/3 left-1/2" /> }
+      <PrintBills
+        customer={customer}
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      />
     </div>
   );
 };
