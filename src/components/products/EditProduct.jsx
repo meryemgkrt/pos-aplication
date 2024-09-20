@@ -15,7 +15,7 @@ const EditProduct = () => {
         const data = await res.json();
         setProducts(data);
       } catch (error) {
-        console.log(error);
+        /* console.log(error); */
       }
     };
 

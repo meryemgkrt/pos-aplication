@@ -44,7 +44,7 @@ const Eddit = ({
         setCategories(categories.filter((item) => item._id !== id));
       } catch (error) {
         message.error("Bir şeyler yanlış gitti.");
-        console.log(error);
+       /*  console.log(error); */
       }
     }
   };
