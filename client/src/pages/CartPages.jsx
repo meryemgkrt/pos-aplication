@@ -3,7 +3,7 @@ import Header from "../components/header/Header";
 import { useRef, useState } from "react";
 import CreateBills from "../components/cart/CreateBills";
 import { useDispatch, useSelector } from "react-redux";
-import Highlighter from 'react-highlight-words';
+import Highlighter from "react-highlight-words";
 import {
   ClearOutlined,
   PlusCircleOutlined,
@@ -17,7 +17,7 @@ const CartPages = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
- 
+
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -26,11 +26,17 @@ const CartPages = () => {
 
   const handleReset = (clearFilters) => {
     clearFilters();
-    setSearchText('');
+    setSearchText("");
   };
 
   const getColumnSearchProps = (dataIndex) => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+      close,
+    }) => (
       <div
         style={{
           padding: 8,
@@ -41,11 +47,13 @@ const CartPages = () => {
           ref={searchInput}
           placeholder={`Search ${dataIndex}`}
           value={selectedKeys[0]}
-          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
           onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
           style={{
             marginBottom: 8,
-            display: 'block',
+            display: "block",
           }}
         />
         <Space>
@@ -97,7 +105,7 @@ const CartPages = () => {
     filterIcon: (filtered) => (
       <SearchOutlined
         style={{
-          color: filtered ? '#1677ff' : undefined,
+          color: filtered ? "#1677ff" : undefined,
         }}
       />
     ),
@@ -112,20 +120,22 @@ const CartPages = () => {
       searchedColumn === dataIndex ? (
         <Highlighter
           highlightStyle={{
-            backgroundColor: '#ffc069',
+            backgroundColor: "#ffc069",
             padding: 0,
           }}
           searchWords={[searchText]}
           autoEscape
-          textToHighlight={text ? text.toString() : ''}
+          textToHighlight={text ? text.toString() : ""}
         />
       ) : (
         text
       ),
   });
+
   const showModal = () => {
     setIsModalOpen(true);
   };
+
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
@@ -134,7 +144,7 @@ const CartPages = () => {
       title: "Ürün Görseli",
       dataIndex: "img",
       key: "img",
-      with: "125px",
+      width: "125px",
       render: (img) => (
         <img src={img} alt="img" className="object-cover w-20 h-20" />
       ),
@@ -143,16 +153,14 @@ const CartPages = () => {
       title: "Ürün Adı",
       dataIndex: "title",
       key: "title",
-      ...getColumnSearchProps('title'),
+      ...getColumnSearchProps("title"),
     },
     {
       title: "Kategori",
       dataIndex: "category",
       key: "category",
       ...getColumnSearchProps("category"),
-      
     },
-
     {
       title: "Ürün Adeti",
       dataIndex: "quantity",
@@ -177,12 +185,9 @@ const CartPages = () => {
               icon={<MinusCircleOutlined />}
               onClick={() => {
                 if (record.quantity === 1) {
-                  if (window.confirm("Ürün Silinsin Mi?")) {
-                    dispatch(decrease(record));
-                    message.success("Ürün Sepetten Silindi.");
-                  }
-                }
-                if (record.quantity > 1) {
+                  dispatch(decrease(record));
+                  message.success("Ürün Sepetten Silindi.");
+                } else if (record.quantity > 1) {
                   dispatch(decrease(record));
                 }
               }}
@@ -191,17 +196,15 @@ const CartPages = () => {
         );
       },
     },
-
     {
       title: "Ürün Fiyatı",
       dataIndex: "price",
       key: "price",
-      render: (text) => <span className="">{text.toFixed(2)}₺</span>,
-      
+      render: (text) => <span>{text.toFixed(2)}₺</span>,
     },
     {
       title: "Toplam Fiyat",
-
+      key: "totalPrice",
       render: (text, record) => (
         <span className="font-semibold">
           {(record.price * record.quantity).toFixed(2)}₺
@@ -210,16 +213,13 @@ const CartPages = () => {
     },
     {
       title: "Action",
-      dataIndex: "action",
       key: "action",
       render: (text, record) => (
         <Popconfirm
           title="Ürünü silmek istediğinize emin misiniz?"
           onConfirm={() => {
-            if (window.confirm("Ürün Silinsin Mi?")) {
-              dispatch(deleteCart(record));
-              message.success("Ürün Sepetten Silindi.");
-            }
+            dispatch(deleteCart(record));
+            message.success("Ürün Sepetten Silindi.");
           }}
           okText="Evet"
           cancelText="Hayır"
@@ -234,40 +234,42 @@ const CartPages = () => {
       ),
     },
   ];
+
   return (
     <>
       <Header />
       <div className="px-6">
         <Table
-          dataSource={cart.cartItems}
+          dataSource={cart.cartItems.map((item, index) => ({
+            ...item,
+            key: item._id || index,
+          }))}
           columns={columns}
           bordered
           pagination={false}
         />
+
         <div className="flex justify-end mt-4 cart-total">
-          <Card className=" w-72">
+          <Card className="w-72">
             <div className="flex justify-between">
-              <span className="">Ara Toplam</span>
-              <span className="">
-                {cart.total > 0 ? cart.total.toFixed(2) : 0}₺
-              </span>
+              <span>Ara Toplam</span>
+              <span>{cart.total > 0 ? cart.total.toFixed(2) : "0.00"}₺</span>
             </div>
             <div className="flex justify-between">
               <b>KDV %{cart.tax}</b>
               <span className="font-semibold text-red-600">
                 {(cart.total * cart.tax) / 100 > 0
                   ? `+${((cart.total * cart.tax) / 100).toFixed(2)}`
-                  : 0}
+                  : "0.00"}
                 ₺
               </span>
             </div>
             <div className="flex justify-between border-t-2 border-grey">
               <b className="font-bold text-green-600">Toplam</b>
-              <b className="">
-                {" "}
+              <b>
                 {cart.total + (cart.total * cart.tax) / 100 > 0
                   ? (cart.total + (cart.total * cart.tax) / 100).toFixed(2)
-                  : 0}
+                  : "0.00"}
                 ₺
               </b>
             </div>

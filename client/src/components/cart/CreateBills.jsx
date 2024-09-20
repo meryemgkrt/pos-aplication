@@ -33,7 +33,7 @@ const CreateBills = ({ isModalOpen, setIsModalOpen }) => {
       }
     } catch (error) {
       message.warning("Bir şeyler yanlış gitti.");
-      console.log("Error:", error.message || error);
+     /*  console.log("Error:", error.message || error); */
     }
   };
 

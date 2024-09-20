@@ -10,6 +10,7 @@ import Register from "./pages/auth/Register";
 import Login from "./pages/auth/Login";
 import ProductsPages from "./pages/ProductsPages";
 import { useSelector } from "react-redux";
+import PageStatstik from "./pages/PageStatstik";
 
 
 const App = () => {
@@ -42,7 +43,7 @@ useEffect(() => {
         } />
         <Route path="/statistic" element={
           <RouterControl>
-             <StatisticPages />
+             <PageStatstik />
           </RouterControl>
         } />
         <Route path="/products" element={

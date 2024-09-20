@@ -1,26 +1,30 @@
+import React, { useState, useEffect } from "react";
 import Header from "../components/header/Header";
 import Categories from "../components/categoies/Categories";
 import Products from "../components/products/Products";
 import CartTotals from "../components/cart/CartTotals";
-import { useEffect, useState } from "react";
 import { Spin } from "antd";
+
 const HomePages = () => {
   const [categories, setCategories] = useState();
   const [products, setProducts] = useState();
   const [filtered, setFiltered] = useState([]);
   const [search, setSearch] = useState("");
+  const [isModalOpen, setAddIsModalOpen] = useState(false); // Modal state'i tanımlandı
+
   useEffect(() => {
     const getProducts = async () => {
       try {
+       
         const res = await fetch("http://localhost:5000/api/products/get-all");
         const data = await res.json();
-        console.log(data);
+       /*  console.log(data); */
         setProducts(data);
-        setAddIsModalOpen(false);
       } catch (error) {
-        console.log(error);
+      /*   console.log("Error fetching products:", error); */
       }
     };
+
     getProducts();
   }, []);
   useEffect(() => {
@@ -28,17 +32,15 @@ const HomePages = () => {
       try {
         const res = await fetch("http://localhost:5000/api/category/get-all");
         const data = await res.json();
-        console.log(data);
-        data &&
+        if (data) {
           setCategories(
-            data.map((item, index) => {
-              return {
-                ...item,
-                value: item.title,
-                key: item.id || index,
-              };
-            })
+            data.map((item, index) => ({
+              ...item,
+              value: item.title,
+              key: item.id || index,
+            }))
           );
+        }
       } catch (error) {
         console.log(error);
       }

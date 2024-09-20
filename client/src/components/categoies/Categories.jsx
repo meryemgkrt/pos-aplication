@@ -15,7 +15,7 @@ useEffect(()=>{
     else{setFiltered(products.filter((item)=>item.category === categoryTitle))}
 }, [products, setFiltered, categoryTitle])
 
-console.log(categoryTitle)
+/* console.log(categoryTitle) */
   return (
     <ul className="flex gap-4 text-lg md:flex-col">
       {categories.map((item) => (

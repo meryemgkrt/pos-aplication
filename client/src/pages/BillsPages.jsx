@@ -139,7 +139,7 @@ const BillsPages = () => {
         const data = await res.json();
         setBillsItems(data);
       } catch (error) {
-        console.log("Error:", error.message || error);
+       /*  console.log("Error:", error.message || error); */
       }
     };
     getBills();
