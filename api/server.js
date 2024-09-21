@@ -4,7 +4,7 @@ const cors = require("cors");
 const express = require("express");
 const app = express();
 const logger = require("morgan");
-const port = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000;
 
 // Load environment variables from .env file
 dotenv.config();
@@ -45,6 +45,6 @@ app.use("/api/users", usersRoute);
 app.get("/", (req, res) => res.send("Hello World!"));
 
 // Start server
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
