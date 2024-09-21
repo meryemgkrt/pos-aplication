@@ -6,10 +6,25 @@ import product from "../img/product.png";
 import sale from "../img/sale.png";
 import StatisticCard from "../components/statistic/StatisticCard";
 import { Pie, Bar } from "react-chartjs-2";
-import { Chart, ArcElement, Tooltip as ChartTooltip, Legend as ChartLegend, CategoryScale, LinearScale, BarElement } from 'chart.js';
+import {
+  Chart,
+  ArcElement,
+  Tooltip as ChartTooltip,
+  Legend as ChartLegend,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+} from "chart.js";
 import { Spin } from "antd";
 
-Chart.register(ArcElement, ChartTooltip, ChartLegend, CategoryScale, LinearScale, BarElement);
+Chart.register(
+  ArcElement,
+  ChartTooltip,
+  ChartLegend,
+  CategoryScale,
+  LinearScale,
+  BarElement
+);
 
 const StatisticPages = () => {
   const [products, setProducts] = useState([]);
@@ -34,18 +49,17 @@ const StatisticPages = () => {
     getProducts();
   }, []);
 
- 
   useEffect(() => {
     const asyncFetch = async () => {
       try {
         const response = await fetch("http://localhost:5000/api/bills/get-all");
         const json = await response.json();
-       /*  console.log("Fatura verileri:", json); */
+        /*  console.log("Fatura verileri:", json); */
         setBills(json);
-        setLoading(false); 
+        setLoading(false);
       } catch (error) {
-       /*  console.log("fetch data failed", error); */
-        setLoading(false); 
+        /*  console.log("fetch data failed", error); */
+        setLoading(false);
       }
     };
     asyncFetch();
@@ -59,43 +73,40 @@ const StatisticPages = () => {
     return `${amount.toFixed(2)}₺`;
   };
 
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']; 
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
-;
-  
   const pieData = {
-    labels: bills.map(bill => bill.customerName),
+    labels: bills.map((bill) => bill.customerName),
     datasets: [
       {
         label: "SubTotal",
-        data: bills.map(bill => bill.subTotal),
+        data: bills.map((bill) => bill.subTotal),
         backgroundColor: COLORS,
         borderWidth: 1,
-      }
-    ]
+      },
+    ],
   };
-  
 
- 
   const barData = {
-    labels: bills.map(bill => bill.customerName),
+    labels: bills.map((bill) => bill.customerName),
     datasets: [
       {
         label: "Total Amount (₺)",
-        data: bills.map(bill => bill.totalAmount),
-        backgroundColor: bills.map((bill, index) => COLORS[index % COLORS.length]), // Farklı renkler
-        borderRadius: 10, // Sütunları yuvarlak hale getirmek için
+        data: bills.map((bill) => bill.totalAmount),
+        backgroundColor: bills.map(
+          (bill, index) => COLORS[index % COLORS.length]
+        ),
+        borderRadius: 10,
         borderWidth: 1,
-      }
-    ]
+      },
+    ],
   };
 
-  // Pie Chart options: Küçültmek için "radius" kullanıyoruz.
   const pieOptions = {
     responsive: true,
     plugins: {
       legend: {
-        position: 'bottom',
+        position: "bottom",
       },
       tooltip: {
         callbacks: {
@@ -103,11 +114,10 @@ const StatisticPages = () => {
         },
       },
     },
-    cutout: '50%', 
-    radius: '80%', 
+    cutout: "50%",
+    radius: "80%",
   };
 
-  
   const barOptions = {
     responsive: true,
     scales: {
@@ -138,7 +148,7 @@ const StatisticPages = () => {
               {items &&
                 items.length > 0 &&
                 items.map((item, index) => {
-                 /*  console.log(item.id || index); */
+                  /*  console.log(item.id || index); */
                   return <div key={item.id || index}>{item.name}</div>;
                 })}
               Hoş Geldin{" "}
@@ -169,14 +179,14 @@ const StatisticPages = () => {
 
             {/* Grafikler */}
             {bills.length > 0 ? (
-              <div className="flex items-center justify-between gap-10">
+              <div className="flex flex-col items-center justify-between gap-16 lg:flex-row">
                 {/* Pie Chart */}
-                <div className="w-1/2" style={{ height: '400px' }}>
+                <div className="w-full lg:w-1/2" style={{ height: "400px" }}>
                   <Pie data={pieData} options={pieOptions} />
                 </div>
 
                 {/* Bar Chart */}
-                <div className="w-1/2" style={{ height: '400px' }}>
+                <div className="w-full lg:w-1/2" style={{ height: "400px" }}>
                   <Bar data={barData} options={barOptions} />
                 </div>
               </div>
