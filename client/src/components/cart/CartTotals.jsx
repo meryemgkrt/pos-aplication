@@ -58,22 +58,21 @@ const CartTotals = () => {
                   <Button
                     type="primary"
                     shape="circle"
-                    icon={
-                      <MinusCircleOutlined
-                        onClick={() => {
-                          if (item.quantity === 1) {
-                            if (
-                              window.confirm(
-                                "Ürün sepetinizden silinecektir. Onaylıyor musunuz?"
-                              )
-                            ) {
-                              dispatch(decrease(item));
-                              message.success("Ürün sepetten silindi.");
-                            }
-                          }
-                        }}
-                      />
-                    }
+                    onClick={() => {
+                      if (item.quantity > 1) {
+                        dispatch(decrease(item));
+                      } else if (item.quantity === 1) {
+                        if (
+                          window.confirm(
+                            "Ürün sepetinizden silinecektir. Onaylıyor musunuz?"
+                          )
+                        ) {
+                          dispatch(decrease(item));
+                          message.success("Ürün sepetten silindi.");
+                        }
+                      }
+                    }}
+                    icon={<MinusCircleOutlined />}
                   />
                 </div>
               </li>
