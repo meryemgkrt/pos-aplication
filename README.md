@@ -94,3 +94,6 @@ Cart and Invoice Management
 
 License
 This project is licensed under the MIT License.
+
+- - Gif add
+![](./client/src/img/pos-aplication.gif)
